@@ -1,78 +1,59 @@
+// Corrected Goldrate provider with import
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+ // Adjust the path as needed
 
-class GoldrateModel {
-  final String id;
-  final double gram;
-  final double pavan;
-  final double down;
-  final double up;
+import 'goldrate_model.dart'; // Correct import path
 
-  GoldrateModel({
-    required this.id,
-    required this.gram,
-    required this.pavan,
-    required this.down,
-    required this.up,
-  });
-  GoldrateModel.fromData(Map<String, dynamic> data)
-      : id = data['id'],
-        gram = data['gram'],
-        pavan = data['pavan'],
-        down = data['down'],
-        up = data['up'];
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'gram': gram,
-      'pavan': pavan,
-      'down': down,
-      'up': up,
-    };
-  }
-}
+  // Add the correct path to the GoldrateModel file
 
 class Goldrate with ChangeNotifier {
-  late FirebaseFirestore firestore;
-  initiliase() {
-    firestore = FirebaseFirestore.instance;
+  late FirebaseFirestore _firestore;
+
+  Goldrate() {
+    _firestore = FirebaseFirestore.instance;
   }
 
-  CollectionReference collectionReference =
+  final CollectionReference _collectionReference =
       FirebaseFirestore.instance.collection('goldrate');
 
-  late List<GoldrateModel> _goldRate;
+  List<GoldrateModel> _goldRates = [];
 
-  Future<bool?> checkPermission() async {
-    bool permission = true;
-    String msg = "";
-    QuerySnapshot querySnapshot;
+  List<GoldrateModel> get goldRates => _goldRates;
 
+  // Fetch Goldrate data from Firestore
+  Future getGoldrate() async {
     try {
-      querySnapshot = await collectionReference.get().catchError((err) {
-        if (err.code == "permission-denied") {
-          permission = false;
-          msg = "permission-denied";
-        }
-      });
+      QuerySnapshot querySnapshot = await _collectionReference.get();
+
       if (querySnapshot.docs.isNotEmpty) {
-        return permission = true;
+        _goldRates = querySnapshot.docs.map((doc) {
+          return GoldrateModel.fromData({
+            "id": doc.id,
+            ...doc.data() as Map<String, dynamic>, // Merge document fields
+          });
+        }).toList();
+        notifyListeners();
       }
-      // return permission = true;
-    } catch (err) {
-      if (msg == "permission-denied") {
-        return permission = false;
-      }
+    } catch (e) {
+      print("Error fetching gold rates: $e");
+    }
+  }
+
+  // Returns the latest gold rate (example logic)
+  GoldrateModel? getLatestGoldrate() {
+    if (_goldRates.isNotEmpty) {
+      return _goldRates.last; // Return the latest one (you can change this logic)
     }
     return null;
   }
 
-  Future<List?> read() async {
+ Future<List?> read() async {
     QuerySnapshot querySnapshot;
     List goldaRateList = [];
     try {
-      querySnapshot = await collectionReference.get();
+      querySnapshot = await _collectionReference.get();
 
       if (querySnapshot.docs.isNotEmpty) {
         // print("inside read ");
@@ -96,4 +77,8 @@ class Goldrate with ChangeNotifier {
     }
     return null;
   }
+
+  void initiliase() {}
+
+  checkPermission() {}
 }

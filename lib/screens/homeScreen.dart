@@ -5,11 +5,13 @@ import 'package:atlas_gold_user/providers/banner.dart';
 import 'package:atlas_gold_user/providers/category.dart';
 import 'package:atlas_gold_user/providers/goldrate.dart';
 import 'package:atlas_gold_user/providers/product.dart';
+import 'package:atlas_gold_user/screens/product_list_screen.dart';
 import 'package:atlas_gold_user/screens/profile.dart';
 import 'package:atlas_gold_user/screens/transaction_screen.dart';
 import 'package:atlas_gold_user/widgets/BannerWidget.dart';
 import 'package:atlas_gold_user/widgets/categoryItem.dart';
 import 'package:atlas_gold_user/widgets/productItem.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:provider/provider.dart';
@@ -86,6 +88,8 @@ class _HomeScreen2State extends State<HomeScreen2> {
     });
   }
 
+  List imgList = [];
+
   getSlider() {
     Provider.of<BannerProvider>(context, listen: false)
         .getSlide('Banner')
@@ -93,6 +97,7 @@ class _HomeScreen2State extends State<HomeScreen2> {
       print(onvalue);
       setState(() {
         banner = onvalue;
+        imgList = onvalue;
       });
     });
   }
@@ -100,9 +105,9 @@ class _HomeScreen2State extends State<HomeScreen2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: TColo.primaryColor1,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: TColo.primaryColor1,
+        backgroundColor: Colors.white,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -156,20 +161,74 @@ class _HomeScreen2State extends State<HomeScreen2> {
                     SizedBox(
                       height: 10,
                     ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          CategoryItem(title: 'Fashion Jewellery'),
-                          CategoryItem(title: 'Traditional Jewellery'),
-                          CategoryItem(title: 'Designer Jewellery'),
-                          CategoryItem(title: 'Bridal Jewellery'),
-                        ],
-                      ),
-                    ),
+                    categoryList.isNotEmpty
+                        ? SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: categoryList
+                                  .map((category) => GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProductListScreen(
+                                                      category:
+                                                          category['name'],
+                                                    )));
+                                      },
+                                      child: CategoryItem(
+                                          title: category['name'])))
+                                  .toList(),
+                              // CategoryItem(title: 'Fashion Jewellery'),
+                              // CategoryItem(title: 'Traditional Jewellery'),
+                              // CategoryItem(title: 'Designer Jewellery'),
+                              // CategoryItem(title: 'Bridal Jewellery'),
+                            ),
+                          )
+                        : Center(child: Text("No categories available")),
                     SizedBox(height: 20),
-                    BannerWidget(),
+                    banner.isNotEmpty
+                        ? imgList.isNotEmpty
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: CarouselSlider(
+                                  options: CarouselOptions(
+                                    height: MediaQuery.of(context).size.height *
+                                        .25,
+                                    autoPlay: true,
+                                    enlargeCenterPage: true,
+                                    aspectRatio: 16 / 9,
+                                    viewportFraction: 1.0,
+                                  ),
+                                  items: imgList.map((img) {
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        image: DecorationImage(
+                                          image: NetworkImage(img["photo"]!),
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              )
+                            : Container(
+                                width: double.infinity,
+                                height:
+                                    MediaQuery.of(context).size.height * .25,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                        "assets/images/bannerImg.jpeg"), // Replace with your image path
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              )
+                        : Text('No banners available'),
 
                     SizedBox(height: 16),
 
@@ -241,19 +300,36 @@ class _HomeScreen2State extends State<HomeScreen2> {
                     Text('Top Picks',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold)),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                            child: ProductItem(
-                                title: 'Party Wear Earrings',
-                                price: 'Rs. 500')),
-                        Expanded(
-                            child: ProductItem(
-                                title: 'Designer Bangle Sets',
-                                price: 'Rs. 500')),
-                      ],
-                    ),
+                    productList.isNotEmpty
+                        ? GridView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 10,
+                                    mainAxisSpacing: 10),
+                            itemCount: productList.length,
+                            itemBuilder: (context, index) {
+                              return ProductItem(
+                                  title: productList[index]['productCode'],
+                                  price: 'Rs. ${productList[index]['gram']}');
+                            },
+                          )
+                        : Text('No products available'),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     Expanded(
+                    //         child: ProductItem(
+                    //             title: 'Party Wear Earrings',
+                    //             price: 'Rs. 500')),
+                    //     Expanded(
+                    //         child: ProductItem(
+                    //             title: 'Designer Bangle Sets',
+                    //             price: 'Rs. 500')),
+                    //   ],
+                    // ),
                   ],
                 ),
               ),

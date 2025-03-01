@@ -14,11 +14,10 @@ class ProductItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: 120,
+            height: 100,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(
-                    'assets/images/earnings.jpg'), 
+                image: AssetImage('assets/images/earnings.jpg'),
                 fit: BoxFit.cover,
               ),
             ),

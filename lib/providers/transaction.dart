@@ -201,7 +201,7 @@ class Transaction with ChangeNotifier {
             'staffId': doc['staffId'],
             'gramWeight': doc['gramWeight'],
             'gramPriceInvestDay': doc['gramPriceInvestDay'],
-            'branch': doc['branch'],
+            // 'branch': doc['branch'],
             'transactionMode': doc['transactionMode'],
             'merchentTransactionId': doc['merchentTransactionId']
           };
