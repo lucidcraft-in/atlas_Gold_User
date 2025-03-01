@@ -1,8 +1,6 @@
 import 'package:atlas_gold_user/screens/homeScreen.dart';
-import 'package:atlas_gold_user/screens/home_screen.dart';
-import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../common/colo_extension.dart';
 import 'dashBoard.dart';
 import 'profile.dart';
 import 'transaction_screen.dart';
@@ -16,104 +14,90 @@ class HomeNavigation extends StatefulWidget {
 
 class _HomeNavigationState extends State<HomeNavigation>
     with TickerProviderStateMixin {
-  var _selectedTab = _SelectedTab.home;
-  var selectIndex = 0;
-  void _handleIndexChanged(int i) {
-    // print(i);
-    setState(() {
-      _selectedTab = _SelectedTab.values[i];
-      selectIndex = i;
-    });
-  }
+  int selectedNavBarIndex = 0;
 
-  bool checkValue = false;
-
-  var user;
-  checkUser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      checkValue = prefs.containsKey('user');
-    });
-  }
+  List<Widget> screens = [HomeScreen2(), TransactionScreen(), ProfileScreen()];
 
   @override
   void initState() {
     super.initState();
-    checkUser();
   }
 
   @override
   Widget build(BuildContext context) {
-    var anim = AnimationController(
-      vsync: this,
-      value: 1,
-      duration: const Duration(milliseconds: 500),
-    );
+    Color navBarBackgroundColor = screens.length == 4
+        ? const Color.fromARGB(255, 255, 255, 255)
+        : Colors.white;
     return Scaffold(
-      // body: Container(
-      //   child: Image.asset("lib/img/1.png"),
-      // ),
-      body: PageView.builder(
-          // controller: pageController,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: pages.length,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-                // onTap: () {
-                //   pageController.jumpToPage(index); // for regular jump
-                //   // pageController.animateToPage(_position,
-                //   //     curve: Curves.decelerate,
-                //   //     duration: Duration(
-                //   //         milliseconds:
-                //   //             300)); // for animated jump. Requires a curve and a duration
-                // },
-                child: pages[selectIndex]);
-          }),
+      body: screens[selectedNavBarIndex],
       extendBody: true, //<------like this
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.only(bottom: 10),
-        child: DotNavigationBar(
-          margin: EdgeInsets.only(left: 10, right: 10),
-          currentIndex: _SelectedTab.values.indexOf(_selectedTab),
-          dotIndicatorColor: Colors.white,
-          unselectedItemColor: Colors.grey[300],
-          splashBorderRadius: 50,
-          // enableFloatingNavBar: false,
-          onTap: _handleIndexChanged,
-          items: [
-            /// Home
-            DotNavigationBarItem(
-              icon: Icon(Icons.home),
-              unselectedColor: Colors.blueGrey,
-              selectedColor: Theme.of(context).primaryColor,
-            ),
-
-            /// Likes
-            // if (checkValue == true)
-            DotNavigationBarItem(
-              icon: Icon(Icons.account_balance_wallet),
-              unselectedColor: Colors.blueGrey,
-              selectedColor: Theme.of(context).primaryColor,
-            ),
-
-            /// Profile
-            DotNavigationBarItem(
-              icon: Icon(Icons.person),
-              unselectedColor: Colors.blueGrey,
-              selectedColor: Theme.of(context).primaryColor,
-            ),
-          ],
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: navBarBackgroundColor, // Set background color to white
+        showSelectedLabels: true,
+        selectedItemColor: TColo.primaryColor1, // Selected item color
+        unselectedItemColor:
+            Color.fromARGB(255, 189, 189, 189), // Unselected item color
+        selectedLabelStyle: TextStyle(
+          color: TColo.primaryColor1,
+          fontSize: 12,
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w600,
         ),
+        unselectedLabelStyle: TextStyle(
+          color: Color.fromARGB(255, 189, 189, 189),
+          fontSize: 12,
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w400,
+        ),
+        currentIndex: selectedNavBarIndex,
+        onTap: (index) {
+          setState(() {
+            selectedNavBarIndex = index;
+          });
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              color: Color.fromARGB(255, 189, 189, 189),
+            ),
+            activeIcon: Icon(
+              Icons.home,
+              color: TColo.primaryColor1,
+            ),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.aod_outlined,
+                color: Color.fromARGB(255, 189, 189, 189),
+              ),
+              activeIcon: Icon(
+                Icons.aod,
+                color: TColo.primaryColor1,
+              ),
+              label: "Transaction"),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.settings,
+                color: Color.fromARGB(255, 189, 189, 189),
+              ),
+              activeIcon: Icon(
+                Icons.settings,
+                color: TColo.primaryColor1,
+              ),
+              label: "Profile"),
+
+          // BottomNavigationBarItem(
+          //     icon: Icon(
+          //       Icons.assignment_ind_outlined,
+          //       color: Color.fromARGB(255, 189, 189, 189),
+          //     ),
+          //     activeIcon:
+          //         Icon(Icons.assignment_ind, color: TColo.primaryColor1),
+          //     label: "Profile"),
+        ],
       ),
     );
   }
-
-  List pages = [
-    HomeScreen2(),
-    // GoogleMapScreen(place: "Kakkodi"),
-    TransactionScreen(),
-    ProfileScreen()
-  ];
 }
-
-enum _SelectedTab { home, favorite, search, person }

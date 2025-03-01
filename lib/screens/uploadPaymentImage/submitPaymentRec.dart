@@ -241,7 +241,7 @@ class _SendPaymentRecState extends State<SendPaymentRec> {
       StaffData = jsonDecode(prefs.getString('staff')!);
     });
     dbGoldrate = Goldrate();
-    dbGoldrate!.initiliase();
+    // dbGoldrate!.initiliase();
     dbGoldrate!.read().then((value) => {
           setState(() {
             goldrateList = value!;

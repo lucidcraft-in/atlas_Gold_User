@@ -21,7 +21,7 @@ class _HomeViewState extends State<HomeView> {
 
   initialise() {
     db = Goldrate();
-    db?.initialise();
+    // db?.initialise();
     db?.read().then((value) => {
           setState(() {
             goldrateList = value!;

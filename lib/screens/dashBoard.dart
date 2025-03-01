@@ -46,7 +46,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   String goldTime = "";
   initialise() {
     db = Goldrate();
-    db?.initialise();
+    // db?.initialise();
     db?.read().then((value) => {
           setState(() {
             goldrateList = value!;

@@ -141,7 +141,7 @@ class MyApp extends StatelessWidget {
           home: AnimatedSplashScreen(
             splash: Image.asset('assets/images/logo.png'),
             splashIconSize: 200,
-            nextScreen: HomeScreen2(),
+            nextScreen: HomeNavigation(),
             splashTransition: SplashTransition.scaleTransition,
             backgroundColor: TColo.primaryColor1,
             duration: 2500,

@@ -2,11 +2,11 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
- // Adjust the path as needed
+// Adjust the path as needed
 
 import 'goldrate_model.dart'; // Correct import path
 
-  // Add the correct path to the GoldrateModel file
+// Add the correct path to the GoldrateModel file
 
 class Goldrate with ChangeNotifier {
   late FirebaseFirestore _firestore;
@@ -44,12 +44,13 @@ class Goldrate with ChangeNotifier {
   // Returns the latest gold rate (example logic)
   GoldrateModel? getLatestGoldrate() {
     if (_goldRates.isNotEmpty) {
-      return _goldRates.last; // Return the latest one (you can change this logic)
+      return _goldRates
+          .last; // Return the latest one (you can change this logic)
     }
     return null;
   }
 
- Future<List?> read() async {
+  Future<List?> read() async {
     QuerySnapshot querySnapshot;
     List goldaRateList = [];
     try {
@@ -78,7 +79,7 @@ class Goldrate with ChangeNotifier {
     return null;
   }
 
-  void initiliase() {}
+  void initialise() {}
 
   checkPermission() {}
 }
