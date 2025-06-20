@@ -28,7 +28,7 @@ class Contact extends StatelessWidget {
 
             email: 'prakashjewellerypba@gmail.com',
             dividerColor: const Color.fromARGB(255, 0, 0, 0),
-            companyName: 'PRAKASH JEWELLERY',
+            companyName: 'Atlas Gold',
 
             companyColor: const Color.fromARGB(255, 0, 0, 0),
             dividerThickness: 3,

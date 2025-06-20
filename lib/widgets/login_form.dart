@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:atlas_gold_user/common/colo_extension.dart';
+import 'package:atlas_gold_user/screens/homeNavigation.dart';
 import 'package:atlas_gold_user/screens/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -70,7 +71,8 @@ class _LoginFormState extends State<LoginForm> {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => HomeScreen2()),
+            MaterialPageRoute(
+                builder: (BuildContext context) => HomeNavigation()),
             (Route<dynamic> route) => false);
 
         String? token = await FirebaseMessaging.instance.getToken();

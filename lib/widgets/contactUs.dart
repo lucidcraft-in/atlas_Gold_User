@@ -230,7 +230,7 @@ class ContactUs extends StatelessWidget {
                       color: Theme.of(context).primaryColor,
                     ),
                     title: Text(
-                      "Prakash Jewellery Main Road Perambra Kozhikode Kerala Pin 673525",
+                      "Atlas Gold Main Road Perambra Kozhikode Kerala Pin 673525",
                       style: TextStyle(
                           // fontWeight: FontWeight.bold,
                           color: Theme.of(context).primaryColor,

@@ -83,7 +83,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-          title: 'Prakash Jewellery',
+          title: 'Atlas Gold',
           theme: ThemeData(
             scaffoldBackgroundColor: Colors.white,
             // primarySwatch: buildMaterialColor(Color(0xFFc0a950)),
@@ -153,7 +153,7 @@ class MyApp extends StatelessWidget {
             GoldRateScreen.routeName: (ctx) => GoldRateScreen(),
             PaymentScreen.routeName: (ctx) => PaymentScreen(),
             ProductListScreen.routeName: (ctx) => ProductListScreen(),
-            GooglemapRmntkrScreen.routeName: (ctx) => GooglemapRmntkrScreen(),
+            // GooglemapRmntkrScreen.routeName: (ctx) => GooglemapRmntkrScreen(),
             PermissionMessage.routeName: (ctx) => PermissionMessage(),
             HomeScreen2.routeName: (ctx) => HomeScreen2(),
           }),

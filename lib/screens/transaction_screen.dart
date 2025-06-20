@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 import '../widgets/transaction_list.dart';
@@ -40,12 +41,10 @@ class _TransactionScreenState extends State<TransactionScreen> {
         customerBalance = alllist[1];
         totalGram = alllist[2];
       });
-
-      // print("------------ user -------------");
-      // print(transactionList);
     });
   }
 
+  List userData = [];
   checkLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _checkValue = prefs.containsKey('user');
@@ -54,8 +53,16 @@ class _TransactionScreenState extends State<TransactionScreen> {
       setState(() {
         user = jsonDecode(prefs.getString('user')!);
       });
-      // print("==========");
-      // print(user["schemeType"]);
+      Provider.of<User>(context, listen: false)
+          .readById(user["id"])
+          .then((val) {
+        setState(() {
+          userData = val!;
+        });
+        print("==========");
+        print(userData);
+      });
+
       await initialise();
     }
 
@@ -263,31 +270,29 @@ class _TransactionScreenState extends State<TransactionScreen> {
                   width: 40,
                   image: AssetImage("assets/images/gold-ingot.png")),
               SizedBox(height: 10),
-              user["schemeType"] == "Gold"
-                  ? Expanded(
-                      child: Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Center(
-                              child: Text(
-                                "Gold In locker",
-                                style: TextStyle(
-                                    fontSize: 11, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                "${totalGram.toStringAsFixed(4)} gms",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                            )
-                          ],
+              Expanded(
+                child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Text(
+                          "Gold In locker",
+                          style: TextStyle(
+                              fontSize: 11, fontWeight: FontWeight.bold),
                         ),
                       ),
-                    )
-                  : Container(),
+                      Center(
+                        child: Text(
+                          "${userData[0]["totalGram"].toStringAsFixed(3)} gms",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
               Expanded(
                 child: Container(
                   child: Column(
@@ -309,7 +314,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                             size: 20,
                           ),
                           Text(
-                            "${customerBalance.toStringAsFixed(2)}",
+                            "${userData[0]["balance"].toStringAsFixed(2)}",
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),

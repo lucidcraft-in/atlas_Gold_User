@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:atlas_gold_user/screens/homeNavigation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,6 +11,7 @@ import '../widgets/profileMoreInfo.dart';
 import '../widgets/profileNameTag.dart';
 import 'contactUs.dart';
 import 'dashBoard.dart';
+import 'pdfload.dart/aboutUs.dart';
 import 'pdfload.dart/privacypolicy.dart';
 import 'pdfload.dart/refundPolicy.dart';
 import 'pdfload.dart/terms.dart';
@@ -264,6 +266,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                       child: ProfileMoreInfo(
                           label: "Privacy Policy", icon: Icons.policy)),
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AboutUsPage()),
+                        );
+                      },
+                      child: ProfileMoreInfo(
+                          label: "About Us", icon: Icons.business_sharp)),
                   Divider(),
                   ListTile(
                     onTap: () {
@@ -412,7 +424,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() {});
     Navigator.pop(context);
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => DashBoardScreen()),
+        MaterialPageRoute(builder: (context) => HomeNavigation()),
         (Route route) => false);
     // Navigator.pushReplacement(context,
     //     new MaterialPageRoute(builder: (context) => new HomeNavigation()));
@@ -518,6 +530,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                       child: ProfileMoreInfo(
                           label: "Privacy Policy", icon: Icons.policy)),
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AboutUsPage()),
+                        );
+                      },
+                      child: ProfileMoreInfo(
+                          label: "About Us", icon: Icons.policy)),
                 ],
               ),
             ),

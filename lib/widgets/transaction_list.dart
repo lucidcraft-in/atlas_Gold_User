@@ -35,7 +35,7 @@ class _TransactionListState extends State<TransactionList> {
         customerBalance = alllist[1];
         totalGram = alllist[2];
       });
-      print(transactionList);
+      print(transactionList[3]);
       // print("user"),
       // print(transactionList),
     });
@@ -115,8 +115,12 @@ class _TransactionListState extends State<TransactionList> {
                                                     ['transactionType'] ==
                                                 0
                                             ? Color(0xFFdbdfde)
-                                            : Color.fromARGB(
-                                                255, 247, 216, 210),
+                                            : transactionList[index]
+                                                        ['transactionType'] !=
+                                                    1
+                                                ? Color.fromARGB(
+                                                    255, 247, 216, 210)
+                                                : Color(0xFFdbdfde),
                                         borderRadius:
                                             BorderRadius.circular(12)),
                                     child: Icon(
@@ -159,21 +163,58 @@ class _TransactionListState extends State<TransactionList> {
                                           ],
                                         ),
                                         Container(
-                                          width: 80,
-                                          child: Row(
+                                          child: Column(
                                             children: [
-                                              Icon(
-                                                FontAwesomeIcons
-                                                    .indianRupeeSign,
-                                                size: 14,
+                                              Row(
+                                                children: [
+                                                  Icon(
+                                                    FontAwesomeIcons
+                                                        .indianRupeeSign,
+                                                    size: 14,
+                                                  ),
+                                                  Text(
+                                                    " ${transactionList[index]['amount'].toStringAsFixed(2)}",
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        color: transactionList[
+                                                                        index][
+                                                                    'transactionType'] ==
+                                                                0
+                                                            ? Colors.green
+                                                            : transactionList[
+                                                                            index]
+                                                                        [
+                                                                        'transactionType'] !=
+                                                                    1
+                                                                ? Colors.orange
+                                                                : Colors.red,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ],
                                               ),
-                                              SizedBox(width: 5),
-                                              Text(
-                                                "${transactionList[index]['amount'].toString()}",
-                                                style: TextStyle(
-                                                    fontSize: 17,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    " ${transactionList[index]['gramWeight'].toStringAsFixed(3)} gm",
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        color: transactionList[
+                                                                        index][
+                                                                    'transactionType'] ==
+                                                                0
+                                                            ? Colors.green
+                                                            : transactionList[
+                                                                            index]
+                                                                        [
+                                                                        'transactionType'] !=
+                                                                    1
+                                                                ? Colors.orange
+                                                                : Colors.red,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ],
                                               ),
                                             ],
                                           ),
@@ -183,7 +224,6 @@ class _TransactionListState extends State<TransactionList> {
                                   )
                                 ],
                               ),
-                              SizedBox(height: 5),
                               Text(
                                 transactionList[index]['transactionMode'] ==
                                         "online"
@@ -194,30 +234,30 @@ class _TransactionListState extends State<TransactionList> {
                                     fontFamily: "latto",
                                     color: Color.fromARGB(221, 41, 42, 41)),
                               ),
-                              // if (isExpanded)
-                              //   Container(
-                              //     width: double.infinity,
-                              //     margin: EdgeInsets.only(top: 8),
-                              //     padding: EdgeInsets.all(8),
-                              //     decoration: BoxDecoration(
-                              //       color: Colors.white,
-                              //       borderRadius: BorderRadius.circular(8),
-                              //     ),
-                              //     child: Column(
-                              //       crossAxisAlignment:
-                              //           CrossAxisAlignment.start,
-                              //       children: [
-                              //         Text(
-                              //           "Gram Price  : ${transactionList[index]['gramPriceInvestDay'].toString()}",
-                              //           style: TextStyle(fontSize: 14),
-                              //         ),
-                              //         Text(
-                              //           "Gram Weight  :  ${transactionList[index]['gramWeight'].toString()}",
-                              //           style: TextStyle(fontSize: 14),
-                              //         ),
-                              //       ],
-                              //     ),
-                              //   ),
+                              if (isExpanded)
+                                Container(
+                                  width: double.infinity,
+                                  margin: EdgeInsets.only(top: 8),
+                                  padding: EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Gram Price  : ${transactionList[index]['gramPriceInvestDay'].toString()}",
+                                        style: TextStyle(fontSize: 14),
+                                      ),
+                                      Text(
+                                        "Gram Weight  :  ${transactionList[index]['gramWeight'].toString()}",
+                                        style: TextStyle(fontSize: 14),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                             ],
                           ),
                         ),

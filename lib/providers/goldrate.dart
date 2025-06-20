@@ -55,7 +55,7 @@ class Goldrate with ChangeNotifier {
     List goldaRateList = [];
     try {
       querySnapshot = await _collectionReference.get();
-
+      print(querySnapshot.docs);
       if (querySnapshot.docs.isNotEmpty) {
         // print("inside read ");
         for (var doc in querySnapshot.docs.toList()) {
@@ -66,11 +66,12 @@ class Goldrate with ChangeNotifier {
             "down": doc["down"],
             "up": doc["up"],
             "updateDate": doc["updateDate"],
-            "updateTime": doc["updateTime"]
+            "updateTime": doc["updateTime"],
+            "18gram": doc["18gram"]
           };
           goldaRateList.add(a);
         }
-
+        print(goldaRateList);
         return goldaRateList;
       }
     } catch (e) {

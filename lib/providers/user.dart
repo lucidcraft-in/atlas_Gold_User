@@ -197,7 +197,7 @@ class User with ChangeNotifier {
               "custId": doc["custId"],
               "phoneNo": doc["phone_no"],
               "address": doc["address"],
-              "scheme": doc["scheme"],
+              // "scheme": doc["scheme"],
               "schemeType": doc["schemeType"],
 
               "place": doc["place"],
