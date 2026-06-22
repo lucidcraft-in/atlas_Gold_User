@@ -35,63 +35,72 @@ class _LoginFormState extends State<LoginForm> {
   );
 
   login() async {
+    String custId = _customerIdController.text.trim();
+    String password = _passwordController.text.trim();
+
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('user')
-        .where('custId', isEqualTo: _customerIdController.text)
-        .where('phone_no', isEqualTo: _passwordController.text)
-        .get();
-    print("querySnapshot.docs: ${querySnapshot.docs}");
-    if (querySnapshot.docs.isNotEmpty) {
-      var doc = querySnapshot.docs.first;
-      Map<String, dynamic>? docData = doc.data() as Map<String, dynamic>?;
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('user')
+          .where('custId', isEqualTo: custId)
+          .where('phone_no', isEqualTo: password)
+          .get();
+      if (querySnapshot.docs.isNotEmpty) {
+        var doc = querySnapshot.docs.first;
+        Map<String, dynamic>? docData = doc.data() as Map<String, dynamic>?;
 
-      if (docData != null) {
-        Map userMap = {
-          "id": doc.id,
-          "name": docData['name'],
-          "custId": docData["custId"],
-          "phoneNo": docData["phone_no"],
-          "address": docData["address"],
-          "place": docData["place"],
-          "balance": docData['balance'],
-          "totalGram": docData["total_gram"],
-          "branch": docData['branch'],
-          "schemeType": docData["schemeType"],
-          "nominee": docData['nominee'],
-          "nomineePhone": docData['nomineePhone'],
-          "nomineeRelation": docData['nomineeRelation'],
-          "adharCard": docData['adharCard'],
-          "panCard": docData['panCard'],
-          "pinCode": docData['pinCode'],
-          "token": docData['token'],
-        };
+        if (docData != null) {
+          Map userMap = {
+            "id": doc.id,
+            "name": docData['name'],
+            "custId": docData["custId"],
+            "phoneNo": docData["phone_no"],
+            "address": docData["address"],
+            "place": docData["place"],
+            "balance": docData['balance'],
+            "totalGram": docData["total_gram"],
+            "branch": docData['branch'],
+            "schemeType": docData["schemeType"],
+            "nominee": docData['nominee'],
+            "nomineePhone": docData['nomineePhone'],
+            "nomineeRelation": docData['nomineeRelation'],
+            "adharCard": docData['adharCard'],
+            "panCard": docData['panCard'],
+            "pinCode": docData['pinCode'],
+            "token": docData['token'],
+          };
 
-        sharedPreferences.setString("user", json.encode(userMap));
+          sharedPreferences.setString("user", json.encode(userMap));
 
+          final snackBar = SnackBar(
+            content: const Text('Loggin Success.....'),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (BuildContext context) => HomeNavigation()),
+              (Route<dynamic> route) => false);
+
+          String? token = await FirebaseMessaging.instance.getToken();
+
+          if (userMap['token'] == "" || userMap['token'] == null) {
+            FirebaseFirestore.instance
+                .collection('user')
+                .doc(userMap['id'])
+                .set({'token': token}, SetOptions(merge: true));
+          }
+        }
+      } else {
         final snackBar = SnackBar(
-          content: const Text('Loggin Success.....'),
+          content: const Text('Invalid Customer id or Password!'),
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (BuildContext context) => HomeNavigation()),
-            (Route<dynamic> route) => false);
-
-        String? token = await FirebaseMessaging.instance.getToken();
-
-        if (userMap['token'] == "" || userMap['token'] == null) {
-          FirebaseFirestore.instance
-              .collection('user')
-              .doc(userMap['id'])
-              .set({'token': token}, SetOptions(merge: true));
-        }
       }
-    } else {
+    } catch (e) {
       final snackBar = SnackBar(
-        content: const Text('Invalid Customer id or Password!'),
+        content: Text('Error: Could not connect. Please try again.'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }

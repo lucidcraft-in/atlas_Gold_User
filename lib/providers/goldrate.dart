@@ -55,7 +55,7 @@ class Goldrate with ChangeNotifier {
     List goldaRateList = [];
     try {
       querySnapshot = await _collectionReference.get();
-      print(querySnapshot.docs);
+
       if (querySnapshot.docs.isNotEmpty) {
         // print("inside read ");
         for (var doc in querySnapshot.docs.toList()) {

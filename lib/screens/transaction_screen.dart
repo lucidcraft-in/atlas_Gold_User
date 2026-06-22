@@ -29,12 +29,12 @@ class _TransactionScreenState extends State<TransactionScreen> {
   double totalGram = 0;
   List alllist = [];
 
-  initialise() {
+  initialise() async {
     db = Transaction();
     dbUser = User();
     db!.initiliase();
 
-    db!.read(user['id']).then((value) {
+    await db!.read(user['id']).then((value) {
       setState(() {
         alllist = value!;
         transactionList = alllist[0];
@@ -59,8 +59,6 @@ class _TransactionScreenState extends State<TransactionScreen> {
         setState(() {
           userData = val!;
         });
-        print("==========");
-        print(userData);
       });
 
       await initialise();
@@ -141,26 +139,28 @@ class _TransactionScreenState extends State<TransactionScreen> {
                 height: MediaQuery.of(context).size.height,
                 // padding: EdgeInsets.only(top: 35),
                 color: Colors.white,
-                child: Column(
-                  children: [
-                    titleCard(),
-                    Container(
-                      padding: EdgeInsets.only(left: 10, top: 10),
-                      child: Row(
+                child: userData.isEmpty
+                    ? Center(child: CircularProgressIndicator())
+                    : Column(
                         children: [
-                          Text(
-                            "Transaction List",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
+                          titleCard(),
+                          Container(
+                            padding: EdgeInsets.only(left: 10, top: 10),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Transaction List",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                  ),
+                                )
+                              ],
                             ),
-                          )
+                          ),
+                          Expanded(child: TransactionList()),
                         ],
                       ),
-                    ),
-                    Expanded(child: TransactionList()),
-                  ],
-                ),
               ),
             ),
           )
