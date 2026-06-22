@@ -17,28 +17,11 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  User? db;
-
-  List userList = [];
-  List filterList = [];
-
   var index;
-
-  initialise() {
-    db = User();
-    db?.initiliase();
-    db?.read().then((value) {
-      setState(() {
-        userList = value!;
-      });
-      print(userList);
-    });
-  }
 
   @override
   void initState() {
     super.initState();
-    initialise();
   }
 
   TextEditingController _customerIdController = TextEditingController();
@@ -54,16 +37,38 @@ class _LoginFormState extends State<LoginForm> {
   login() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
-    filterList = userList
-        .where((element) => (element['custId']
-            .toLowerCase()
-            .contains(_customerIdController.text.toLowerCase())))
-        .toList();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('user')
+        .where('custId', isEqualTo: _customerIdController.text)
+        .where('phone_no', isEqualTo: _passwordController.text)
+        .get();
+    print("querySnapshot.docs: ${querySnapshot.docs}");
+    if (querySnapshot.docs.isNotEmpty) {
+      var doc = querySnapshot.docs.first;
+      Map<String, dynamic>? docData = doc.data() as Map<String, dynamic>?;
 
-    if (filterList.isNotEmpty &&
-        filterList[0]['custId'] == _customerIdController.text) {
-      if (filterList[0]['phoneNo'] == _passwordController.text) {
-        sharedPreferences.setString("user", json.encode(filterList[0]));
+      if (docData != null) {
+        Map userMap = {
+          "id": doc.id,
+          "name": docData['name'],
+          "custId": docData["custId"],
+          "phoneNo": docData["phone_no"],
+          "address": docData["address"],
+          "place": docData["place"],
+          "balance": docData['balance'],
+          "totalGram": docData["total_gram"],
+          "branch": docData['branch'],
+          "schemeType": docData["schemeType"],
+          "nominee": docData['nominee'],
+          "nomineePhone": docData['nomineePhone'],
+          "nomineeRelation": docData['nomineeRelation'],
+          "adharCard": docData['adharCard'],
+          "panCard": docData['panCard'],
+          "pinCode": docData['pinCode'],
+          "token": docData['token'],
+        };
+
+        sharedPreferences.setString("user", json.encode(userMap));
 
         final snackBar = SnackBar(
           content: const Text('Loggin Success.....'),
@@ -77,21 +82,16 @@ class _LoginFormState extends State<LoginForm> {
 
         String? token = await FirebaseMessaging.instance.getToken();
 
-        if (filterList[0]['token'] == "" || filterList[0]['token'] == null) {
+        if (userMap['token'] == "" || userMap['token'] == null) {
           FirebaseFirestore.instance
               .collection('user')
-              .doc(filterList[0]['id'])
+              .doc(userMap['id'])
               .set({'token': token}, SetOptions(merge: true));
         }
-      } else {
-        final snackBar = SnackBar(
-          content: const Text('Wrong password!'),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     } else {
       final snackBar = SnackBar(
-        content: const Text('Customer id is invalid!'),
+        content: const Text('Invalid Customer id or Password!'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
