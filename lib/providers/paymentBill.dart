@@ -24,7 +24,6 @@ class PaymentBillProvider with ChangeNotifier {
       firbase_storage.TaskSnapshot taskSnapshot =
           await storage.ref('paymentRec/$fileName').putFile(file);
       final String downloadUrl = await taskSnapshot.ref.getDownloadURL();
-      // print(downloadUrl);
       collectionReference.add({
         "amount": amount,
         "note": note,

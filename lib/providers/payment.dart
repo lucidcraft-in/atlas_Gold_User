@@ -39,7 +39,6 @@ class Payment with ChangeNotifier {
     try {
       QuerySnapshot querySnapshot =
           await collectionReference.orderBy("orderId").limitToLast(1).get();
-      // print(querySnapshot.docs);
       List lastData = [];
       for (var doc in querySnapshot.docs.toList()) {
         Map a = {
@@ -48,18 +47,15 @@ class Payment with ChangeNotifier {
           "amount": doc["amount"],
         };
         lastData.add(a);
-        // print(lastData);
       }
 
       int defaultId = 120;
       if (querySnapshot.docs.isNotEmpty) {
         // Collection exits
-        // print("Collection exits");
 
         final url = "https://test.cashfree.com/api/v2/cftoken/order";
         try {
           defaultId = lastData[0]["orderId"] + 1;
-          // print(defaultId);
           final response = await http.post(
             Uri.parse(url),
             headers: {
@@ -93,7 +89,6 @@ class Payment with ChangeNotifier {
       } else {
         int orderId = defaultId;
         // Collection not exits
-        // print("Collection not exits");
         final url = "https://test.cashfree.com/api/v2/cftoken/order";
         try {
           final response = await http.post(
@@ -126,7 +121,6 @@ class Payment with ChangeNotifier {
         } catch (err) {
           throw err;
         }
-        // print("else");
       }
     } catch (e) {}
   }
@@ -160,7 +154,6 @@ class Payment with ChangeNotifier {
   Future updateStatus(String status) async {
     QuerySnapshot querySnapshot =
         await collectionReference.orderBy("orderId").limitToLast(1).get();
-    // print(querySnapshot);
     var lastData = [];
     for (var doc in querySnapshot.docs.toList()) {
       Map a = {

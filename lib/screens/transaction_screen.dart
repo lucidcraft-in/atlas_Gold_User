@@ -48,7 +48,6 @@ class _TransactionScreenState extends State<TransactionScreen> {
   checkLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _checkValue = prefs.containsKey('user');
-    // print(_checkValue);
     if (_checkValue == true) {
       setState(() {
         user = jsonDecode(prefs.getString('user')!);

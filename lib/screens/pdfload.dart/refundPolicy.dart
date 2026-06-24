@@ -33,9 +33,8 @@ class _RefundPolicyPageState extends State<RefundPolicyPage> {
         };
         userlist.add(data);
       }
-      print(userlist); // Debugging
+       // Debugging
     } catch (e) {
-      print('Error fetching data: $e');
     }
 
     setState(() {

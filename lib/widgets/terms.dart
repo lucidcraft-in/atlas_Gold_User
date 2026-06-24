@@ -25,7 +25,6 @@ class _TermsState extends State<Terms> {
     Provider.of<BannerProvider>(context, listen: false)
         .getSlide(type)
         .then((value) {
-      print(value);
       setState(() {
         value != null ? slideList = value : slideList;
       });
@@ -149,8 +148,6 @@ class _TermsState extends State<Terms> {
   }
 
   _buildStoryPage(var data) {
-    // print("-------------");
-    // print(data);
     return Image(
       image: NetworkImage(
         data['photo'],

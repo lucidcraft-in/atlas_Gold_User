@@ -54,7 +54,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             goldTime = goldrateList[0]["updateTime"];
             golddate = goldrateList[0]["updateDate"];
           }),
-          print(goldrateList),
+//           print(goldrateList),
         });
     // getProduct();
   }
@@ -63,8 +63,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     Provider.of<BannerProvider>(context, listen: false)
         .getSlide("Banner")
         .then((value) {
-      // print("============");
-      // print(value);
       setState(() {
         imgList = value;
       });
@@ -83,7 +81,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   checkLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _checkValue = prefs.containsKey('user');
-    // print(_checkValue);
   }
 
   @override

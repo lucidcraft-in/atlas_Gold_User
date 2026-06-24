@@ -59,8 +59,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
       Provider.of<User>(context, listen: false)
           .getUserById(custId)
           .then((value) {
-        // print("========");
-        // print(value);
         if (value == true) {
           clearData();
         }
@@ -112,16 +110,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
     var db = phonePe_Payment();
     db.initiliase();
     db.addTransaction(data).then((value) {
-      // print("----payment data ----");
       setState(() {
         transactionId = value.toUpperCase();
       });
-      // print("----- Firebase insert ----------");
-      // print(transactionId);
       if (transactionId != "") {
         insertAPI(data.amount, data.note, transactionId);
       } else {
-        // print("----- Firebase insert error----------");
       }
     });
   }
@@ -130,7 +124,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
   insertAPI(double amt, String note, String transId) async {
     var rspncData;
     // phonePeFn(amt, transId);
-    // print(inserUrl);
     final response = await http.post(
       Uri.parse(inserUrl),
       headers: {
@@ -147,17 +140,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
         "message": note
       }),
     );
-    // print("---- Backend Insert  -----------");
-    // print(rspncData);
     setState(() {
       rspncData = jsonDecode(response.body);
     });
-    // print("---- Backend Insert  -----------");
 
     if (rspncData["statusCode"] == 200) {
       phonePeFn(amt, transId);
     } else {
-      // print("---- Backend Insert Error -----------");
     }
   }
 
@@ -169,7 +158,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
     String hash = "";
     var data1;
     var url;
-    // print("--------- phone pe -------------");
 
     var PhonePedata = {
       "merchantId": _merchantId,
@@ -183,7 +171,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
       "paymentInstrument": {"type": "PAY_PAGE"}
     };
     setState(() {});
-    // print(PhonePedata);
     setState(() {
       base64data = encodeJsonToBase64(PhonePedata);
       input = base64data + "/pg/v1/pay" + saltKey;
@@ -204,12 +191,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
     setState(() {
       data1 = jsonDecode(response.body);
     });
-    // print("-----------------------------------");
-    // print(data1);
     setState(() {
       url = data1["data"]["instrumentResponse"]["redirectInfo"]["url"];
     });
-    // print(url);
 
     _launchURL(
       url,
@@ -518,7 +502,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
         "X-MERCHANT-ID": merchantId
       },
     );
-    // print("----------phonepe payment Status Response -------");
 
     var data;
     setState(() {
@@ -526,7 +509,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
       paymentDetails = data;
       pressPay = false;
     });
-    // print(data);
     if (data["code"] != "PAYMENT_PENDING") {
       checkTransctionApi(data["data"]["merchantTransactionId"],
           data["data"]["merchantId"], data["data"]["amount"]);
@@ -547,7 +529,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
   late String apiResult;
   checkTransctionApi(
       String merchantTransactionId, String merchantId, int amount) async {
-    // print("----------checkTransctionApi -------");
 
     final apiResponse = await http.post(
       Uri.parse(checkServerAPI),
@@ -561,7 +542,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
         "amount": amount / 100
       }),
     );
-    // print("---------- API Status Response -------");
     var data = jsonDecode(apiResponse.body);
     setState(() {
       containApi = data["status"];
@@ -597,8 +577,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
         .updatePaymentbyTransactionId(response["data"]["merchantTransactionId"],
             response["code"], response)
         .then((value) {
-      // print("------------- value ----------");
-      // print(value);
     }).then((value) {
       if (response["code"] == "PAYMENT_SUCCESS") {
         // add Transaction if payment success
@@ -646,7 +624,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   sendNotification(String title, String token, double amt) async {
-    // print("check notification");
     // // print(token);
     final data = {
       'click_action': 'FLUTTER_NOTIFICATION_CLICK',
@@ -672,11 +649,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 'data': data,
                 'to': "$token"
               }));
-      // print(response.body);
       if (response.statusCode == 200) {
-        // print("notification is sended");
       } else {
-        // print("error");
       }
     } catch (e) {}
   }

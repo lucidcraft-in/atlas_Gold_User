@@ -15,11 +15,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Future loadCategoary() async {
     categoryDb.initiliase();
     categoryDb.getCategorywithImg().then((value) {
-      // print(value);
       setState(() {
         categoryList = value;
       });
-      // print(categoryList);
     });
   }
 

@@ -18,6 +18,7 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   var index;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -35,6 +36,12 @@ class _LoginFormState extends State<LoginForm> {
   );
 
   login() async {
+    if (_isLoading) return;
+    
+    setState(() {
+      _isLoading = true;
+    });
+
     String custId = _customerIdController.text.trim();
     String password = _passwordController.text.trim();
 
@@ -73,6 +80,7 @@ class _LoginFormState extends State<LoginForm> {
 
           sharedPreferences.setString("user", json.encode(userMap));
 
+          if (!mounted) return;
           final snackBar = SnackBar(
             content: const Text('Loggin Success.....'),
           );
@@ -93,12 +101,20 @@ class _LoginFormState extends State<LoginForm> {
           }
         }
       } else {
+        if (!mounted) return;
+        setState(() {
+          _isLoading = false;
+        });
         final snackBar = SnackBar(
           content: const Text('Invalid Customer id or Password!'),
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _isLoading = false;
+      });
       final snackBar = SnackBar(
         content: Text('Error: Could not connect. Please try again.'),
       );
@@ -180,14 +196,20 @@ class _LoginFormState extends State<LoginForm> {
               child: MaterialButton(
                 minWidth: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                onPressed: () {
+                onPressed: _isLoading ? null : () {
                   login();
                 },
-                child: Text("Login",
-                    textAlign: TextAlign.center,
-                    style: style.copyWith(
-                        color: Color.fromARGB(255, 252, 252, 252),
-                        fontWeight: FontWeight.bold)),
+                child: _isLoading 
+                    ? SizedBox(
+                        height: 24,
+                        width: 24,
+                        child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
+                      )
+                    : Text("Login",
+                        textAlign: TextAlign.center,
+                        style: style.copyWith(
+                            color: Color.fromARGB(255, 252, 252, 252),
+                            fontWeight: FontWeight.bold)),
               ),
             ),
           ]),

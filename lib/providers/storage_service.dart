@@ -15,14 +15,12 @@ class Storage {
     try {
       await storage.ref('images/$fileName').putFile(file);
     } on firebase_core.FirebaseException catch (e) {
-      print(e);
     }
   }
 
   Future<firbase_storage.ListResult> listFiles() async {
     firbase_storage.ListResult result = await storage.ref('images').listAll();
     result.items.forEach((firbase_storage.Reference ref) {
-      print('found file : $ref');
     });
 
     return result;

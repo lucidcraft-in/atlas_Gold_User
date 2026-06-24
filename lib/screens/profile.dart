@@ -32,17 +32,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     checkValue = prefs.containsKey('user');
 
-    print(checkValue);
     if (checkValue == true) {
       setState(() {
         var data = prefs.getString("user");
-        print(data);
         setState(() {
           user = jsonDecode(data!);
         });
 
-        print("------- --------");
-        print(user);
       });
     }
   }

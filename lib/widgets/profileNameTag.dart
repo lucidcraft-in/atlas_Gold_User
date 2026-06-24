@@ -24,7 +24,6 @@ class _ProfileNameTagState extends State<ProfileNameTag> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print(widget.size);
   }
 
   @override

@@ -35,14 +35,7 @@ class phonePe_Payment with ChangeNotifier {
     DateTime now = DateTime.now();
     String id = "";
     // DocumentReference docRef =
-    print("+++++++");
-    // print(paymentData["custId"]);
-    // print(paymentData["TransactionId"]);
-    // print(paymentData.custId);
 
-    // print(paymentData.custName);
-    // print(paymentData.amount);
-    // print(paymentData.custId);
     await collectionReference.add({
       "custId": paymentData["custId"],
       "order_Id": paymentData["TransactionId"],
@@ -82,7 +75,6 @@ class phonePe_Payment with ChangeNotifier {
         return null;
       }
     } catch (e) {
-      // print('Error fetching document: $e');
       return null;
     }
   }
@@ -99,7 +91,6 @@ class phonePe_Payment with ChangeNotifier {
           .doc(docId)
           .update({"status": status, "payment_responce": data});
     }
-    // print(querySnapshot.docs[0]);
     return;
   }
 }

@@ -33,24 +33,19 @@ class _SendPaymentRecState extends State<SendPaymentRec> {
     if (checkValue == true) {
       setState(() {
         var data = prefs.getString("user");
-        // print(data);
         setState(() {
           user = jsonDecode(data!);
         });
       });
     }
     Provider.of<Goldrate>(context, listen: false).read().then((value) {
-      setState(() {
-        print("++++++++++++++++++++");
-        print(value![0]["gram"]);
-        var rate = value[0]["gram"].toDouble();
-        print(value[0]["gram"].runtimeType);
-        goldRate = rate;
-        _graRateController.text = goldRate.toString();
-      });
-      print("------- --------");
-
-      print(goldRate);
+      if (value != null && value.isNotEmpty) {
+        setState(() {
+          var rate = value[0]["gram"].toDouble();
+          goldRate = rate;
+          _graRateController.text = goldRate.toString();
+        });
+      }
     });
   }
 
@@ -221,7 +216,6 @@ class _SendPaymentRecState extends State<SendPaymentRec> {
                       FilePickerResult? result =
                           await FilePicker.platform.pickFiles();
                       if (result != null) {
-                        // print(result);
                         setState(() {
                           _pickedFile = result.files.single.name;
                           selectedFile = File(result.files.single.path!);
@@ -327,7 +321,6 @@ class _SendPaymentRecState extends State<SendPaymentRec> {
     if (_formKey.currentState!.validate() &&
         _pickedFile != null &&
         _selectedDate != null) {
-      print("------");
       Provider.of<PaymentBillProvider>(context, listen: false)
           .addPayment(
               double.parse(_amountController.text),
@@ -338,8 +331,6 @@ class _SendPaymentRecState extends State<SendPaymentRec> {
               _pickedFile!,
               user)
           .then((val) async {
-        print("-------------");
-        // print(val);
         if (val == 200) {
           // Handle successful submission
           await Future.delayed(Duration(milliseconds: 300));
@@ -366,7 +357,6 @@ class _SendPaymentRecState extends State<SendPaymentRec> {
         }
       });
     } else {
-      print("++++++");
       setState(() {
         _isSubmitting = false;
       });

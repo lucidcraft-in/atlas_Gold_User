@@ -63,7 +63,6 @@ class Product with ChangeNotifier {
 
       await storage.ref('products/$fileName').putFile(file);
     } on firebase_core.FirebaseException catch (e) {
-      print(e);
     }
   }
 
@@ -94,7 +93,6 @@ class Product with ChangeNotifier {
         return userlist;
       }
     } catch (e) {
-      print(e);
     }
     return null;
   }
@@ -123,7 +121,6 @@ class Product with ChangeNotifier {
         return userlist;
       }
     } catch (e) {
-      print(e);
     }
     return null;
   }

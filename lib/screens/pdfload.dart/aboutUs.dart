@@ -34,7 +34,6 @@ class _AboutUsPageState extends State<AboutUsPage> {
         setState(() => isLoading = false);
       }
     } catch (e) {
-      print("Error fetching data: $e");
       setState(() => isLoading = false);
     }
   }
@@ -43,7 +42,6 @@ class _AboutUsPageState extends State<AboutUsPage> {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      print("Could not launch $url");
     }
   }
 

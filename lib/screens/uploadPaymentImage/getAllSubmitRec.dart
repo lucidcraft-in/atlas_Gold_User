@@ -20,7 +20,6 @@ class _submittedRecState extends State<submittedRec> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print("+++++++++");
   }
 
   @override
@@ -38,7 +37,6 @@ class _submittedRecState extends State<submittedRec> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            print(snapshot.error);
             return Center(child: Text('Something Error Occured'));
           } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
             return Center(child: Text('No data found'));
@@ -87,8 +85,6 @@ class _submittedRecState extends State<submittedRec> {
                                         MediaQuery.of(context).size.width * .6,
                                     child: ListTile(
                                       onTap: () {
-                                        print("----666666--");
-                                        print(document);
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(

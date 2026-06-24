@@ -20,7 +20,6 @@ class _SliderPageState extends State<SliderPage> {
     Provider.of<BannerProvider>(context, listen: false)
         .getSlide(type)
         .then((value) {
-      // print(value);
       setState(() {
         value != null ? slideList = value : slideList;
       });
@@ -78,8 +77,6 @@ class _SliderPageState extends State<SliderPage> {
   // }
 
   _buildStoryPage(var data) {
-    // print("-------------");
-    // print(data);
     return data != null
         ? Container(
             child: CachedNetworkImage(

@@ -31,14 +31,12 @@ class Goldrate with ChangeNotifier {
         _goldRates = querySnapshot.docs.map((doc) {
           return GoldrateModel.fromData({
             "id": doc.id,
-            ...doc.data() as Map<String, dynamic>, // Merge document fields
+            // ...doc.data() as Map<String, dynamic>, // Merge document fields
           });
         }).toList();
         notifyListeners();
       }
-    } catch (e) {
-      print("Error fetching gold rates: $e");
-    }
+    } catch (e) {}
   }
 
   // Returns the latest gold rate (example logic)
@@ -57,7 +55,6 @@ class Goldrate with ChangeNotifier {
       querySnapshot = await _collectionReference.get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        // print("inside read ");
         for (var doc in querySnapshot.docs.toList()) {
           Map a = {
             "id": doc.id,
@@ -71,12 +68,11 @@ class Goldrate with ChangeNotifier {
           };
           goldaRateList.add(a);
         }
+        print("===================>");
         print(goldaRateList);
         return goldaRateList;
       }
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
     return null;
   }
 

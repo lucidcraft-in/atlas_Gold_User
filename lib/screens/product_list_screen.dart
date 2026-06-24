@@ -58,7 +58,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
           setState(() {
             userList = value != null ? value : userList;
           }),
-          // print("---------------------"),
         });
   }
 
@@ -94,7 +93,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
                   ),
                   itemCount: userList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    // print(userList[index]['branch']);
                     if (userList[index]['branch'] == 0) {
                       branchName = "Alathur";
                     } else if (userList[index]['branch'] == 1) {
@@ -102,12 +100,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
                     } else if (userList[index]['branch'] == 2) {
                       branchName = "Vadakkencherri";
                     }
-                    // print(branchName);
 
                     return userList != null
                         ? GestureDetector(
                             onTap: () {
-                              // print(userList[index]);
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

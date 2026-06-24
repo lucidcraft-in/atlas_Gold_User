@@ -28,16 +28,12 @@ class _TransactionListState extends State<TransactionList> {
     db!.initiliase();
 
     db!.read(user['id']).then((value) {
-      print(value);
       setState(() {
         alllist = value!;
         transactionList = alllist[0];
         customerBalance = alllist[1];
         totalGram = alllist[2];
       });
-      print(transactionList[3]);
-      // print("user"),
-      // print(transactionList),
     });
   }
 

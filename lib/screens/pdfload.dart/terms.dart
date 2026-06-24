@@ -36,7 +36,6 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
         userlist.add(a);
       }
     } catch (e) {
-      print('Error: $e');
     }
 
     setState(() {
@@ -82,7 +81,6 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
                             height: 300,
                             child: GestureDetector(
                               onTap: () {
-                                print("--");
 
                                 if (userlist[index]['fileType'] != "pdf") {
                                   Navigator.push(
@@ -95,7 +93,6 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
                                   );
                                 } else if (userlist[index]['fileType'] ==
                                     "pdf") {
-                                  print(fileUrl);
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

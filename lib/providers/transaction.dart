@@ -87,7 +87,6 @@ class Transaction with ChangeNotifier {
   double gramTotalWeightFinal = 0;
   int custBranch = 0;
   Future<void> create(TransactionModel transactionModel) async {
-    // print("pro trans 1");
     QuerySnapshot querySnapshot;
     QuerySnapshot goldRate;
     QuerySnapshot transactionQuerySnapshot;
@@ -162,10 +161,8 @@ class Transaction with ChangeNotifier {
         'balance': newbalance,
         'total_gram': gramTotalWeightFinalFixed,
       });
-      // print("pro trans 3");
       notifyListeners();
     } catch (e) {
-      print(e);
     }
   }
 
@@ -220,7 +217,6 @@ class Transaction with ChangeNotifier {
         return [transactionList, balance, balancegram];
       }
     } catch (e) {
-      print(e);
     }
     return null;
   }

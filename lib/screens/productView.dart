@@ -17,7 +17,6 @@ class _SwapableProductViewState extends State<SwapableProductView> {
     setState(() {
       categoryName = widget.category;
     });
-    // print(categoryName);
     var db = Product();
     db.initiliase();
     db.read(categoryName).then((value) => {

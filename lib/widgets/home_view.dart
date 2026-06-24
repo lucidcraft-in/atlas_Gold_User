@@ -215,7 +215,6 @@ class _HomeViewState extends State<HomeView> {
                   height: 130,
                   child: GestureDetector(
                     onTap: () {
-                      print("--------");
                       // Navigator.push(
                       //     context,
                       //     MaterialPageRoute(

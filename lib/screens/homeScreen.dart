@@ -55,8 +55,6 @@ class _HomeScreen2State extends State<HomeScreen2> {
 
   getGoldrate() {
     Provider.of<Goldrate>(context, listen: false).read().then((value) {
-      print("-------");
-
       setState(() {
         goldrateList = value!;
         pavanrate = goldrateList[0]['pavan'];
@@ -65,6 +63,9 @@ class _HomeScreen2State extends State<HomeScreen2> {
         gramRate = goldrateList[0]['gram'];
         eighteenGram = goldrateList[0]['18gram'];
       });
+      print("==========>\n");
+      print(gramRate);
+      print(eighteenGram);
     });
   }
 
@@ -76,7 +77,6 @@ class _HomeScreen2State extends State<HomeScreen2> {
         productList = onValue ?? [];
       });
     }).catchError((error) {
-      print('Error fetching products: $error');
       setState(() {
         productList = []; // Fallback to empty list on error
       });
@@ -89,7 +89,6 @@ class _HomeScreen2State extends State<HomeScreen2> {
     Provider.of<BannerProvider>(context, listen: false)
         .getSlide('Banner')
         .then((onvalue) {
-      print(onvalue);
       setState(() {
         banner = onvalue;
         imgList = onvalue;

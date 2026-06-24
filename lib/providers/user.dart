@@ -177,7 +177,6 @@ class User with ChangeNotifier {
         return userlist;
       }
     } catch (e) {
-      print(e);
     }
     return null;
   }
@@ -216,11 +215,9 @@ class User with ChangeNotifier {
             userlist.add(a);
           }
         }
-        // print(userlist);
         return userlist;
       }
     } catch (e) {
-      print(e);
     }
     return null;
   }
@@ -282,10 +279,8 @@ class User with ChangeNotifier {
     try {
       DocumentSnapshot userDoc = await collectionReference.doc(userId).get();
       if (userDoc.exists) {
-        // print(userDoc['otp']);
         return [userDoc['otp'], userDoc['otpGen']];
       } else {
-        // print('User not found');
       }
       return true;
     } catch (e) {

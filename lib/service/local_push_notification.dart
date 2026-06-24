@@ -15,7 +15,6 @@ class LocalNotificationService {
 
   static void display(RemoteMessage message) async {
       try {
-          print("In Notification method");
            Random random = new Random();
       int id = random.nextInt(1000);
        final NotificationDetails notificationDetails = NotificationDetails(
@@ -29,7 +28,6 @@ class LocalNotificationService {
           )
 
       );
-         print("my id is ${id.toString()}");
           await _flutterLocalNotificationsPlugin.show(
 
         id,
@@ -38,7 +36,6 @@ class LocalNotificationService {
         notificationDetails,);
       }
       on Exception catch (e) {
-      print('Error>>>$e');
     }
   }
 }

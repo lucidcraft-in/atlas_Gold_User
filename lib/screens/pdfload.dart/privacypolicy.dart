@@ -31,9 +31,7 @@ class _PrivacypolicyState extends State<Privacypolicy> {
         };
         userlist.add(a);
       }
-      print(userlist);
     } catch (e) {
-      print('Error: $e');
     }
 
     setState(() {

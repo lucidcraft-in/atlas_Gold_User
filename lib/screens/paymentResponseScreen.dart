@@ -37,9 +37,7 @@ class _ResponseScreenState extends State<ResponseScreen> {
       amount = response["amount"];
       //   mernttransId = response["data"]["merchantTransactionId"];
     });
-    // print(
     //     "----------------------------------- response -------------------------");
-    // print(response["data"]);
     checkUser();
   }
 
@@ -49,14 +47,10 @@ class _ResponseScreenState extends State<ResponseScreen> {
     if (user != null) {
       var decodedJson = json.decode(user);
       userData = decodedJson;
-      // print("----------");
-      // print(userData);
       setState(() {
         userName = userData["name"];
       });
-      // print("========== user Data ============");
 
-      // print(userName);
 
       // getAdminStaff(widget.userBranch);
     }

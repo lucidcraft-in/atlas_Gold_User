@@ -16,7 +16,6 @@ class BannerProvider with ChangeNotifier {
     List sliderList = [];
     QuerySnapshot querySnapshot =
         await collectionReference.where("imageType", isEqualTo: type).get();
-    // print(querySnapshot.docs);
     for (var doc in querySnapshot.docs.toList()) {
       Map a = {
         "id": doc.id,
